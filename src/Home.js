@@ -10,7 +10,6 @@ export const Home = (setResponse) => {
     const navigate = useNavigate();
      const getSteamId = () =>{
         const id = inputRef.current.value;
-        console.log(id);
         localStorage.setItem('id', id);
         navigate('/Profile');
     };
