@@ -1,11 +1,10 @@
 import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
-
 export const Home = (setResponse) => {
-
+    
     const inputRef = useRef(null);
+    
 
     const navigate = useNavigate();
      const getSteamId = () =>{
