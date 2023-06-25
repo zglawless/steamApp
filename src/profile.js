@@ -1,14 +1,15 @@
 import React, {useEffect, useState } from "react";
+import './index.css';
 import { useNavigate } from "react-router-dom";
-//import SteamAPI from "steamapi";
 
 const Profile = () => {
-  const id = localStorage.getItem('id');
-  const URL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamids=" + id;
+  var id = localStorage.getItem('id');
+  var URL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamids=" + id;
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
 
+  console.log(id);
 
   const fetchData = () => {
     setLoading(true);
@@ -25,7 +26,6 @@ const Profile = () => {
         }
       })
       .catch(error => {
-        console.log(error.message);
         setLoading(false);
         navigate('/');
         alert("Could not fetch users profile");
@@ -42,18 +42,13 @@ const Profile = () => {
 
 
   return (
-    <div class="flex flex-col justify-center items-center">
-      <h1>Profile</h1>
-      <div>
-        <img src = {data.avatarfull} alt = "profile image"></img>
+    <div class="flex flex-col items-center h-screen">
+        <div className="justify-start">
+          <img src = {data.avatarfull} alt = "profile image"></img>
+        </div>
         <p>{data.personaname}</p>
-        <a href = {data.profileurl}>View Profile</a>
-
+        <a href = {data.profileurl} target="_blank">View Profile</a>
       </div>
-      
-    </div>
-
-
   );
 }
 export default Profile;
