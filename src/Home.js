@@ -34,7 +34,7 @@ export const Home = (setResponse) => {
                     Submit
                     </button>
                 </div>
-                <p>Ex. 76561197960435530</p>
+                <p>Ex. 76561198322320424</p>
                 </form>
         </div>
     );

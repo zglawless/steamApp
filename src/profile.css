@@ -2,6 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
-p, a {
+p,
+a {
     color: white;
+}
+
+#video {
+    z-index: -1;
+    position: fixed;
+    width: 100%;
+    object-fit: cover;
+    height: 100%;
+    top:0;
+    left: 0;
+}
+
+@media (min-aspect-ratio: 16/9) {
+    #video {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-aspect-ratio: 16/9) {
+    #video {
+        width: auto;
+        height: 100%;
+    }
+}
+
+@media (max-width: 767px) {
+    #video {
+        display: none;
+        body {
+            background: darkgray;
+            background-size: cover;
+        }
+    }
 }
