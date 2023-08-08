@@ -143,11 +143,19 @@ const Profile = () => {
         <p>Account Created: {getDate(data.timecreated)}</p>
         </div>
       </div>
-      <div className="w-7/12 bg-gray-900 h-screen">
+      <div className="grid grid-cols-3 gap-2 w-7/12 bg-gray-900 justify-items-center p-5">
+        <h2 className="hover:bg-gray-700"><a href="" >Games</a></h2>
+        <h2><a href="">Inventory</a></h2>
+        <h2><a href="">Achievements</a></h2>
+
+      </div>
+      <div className="w-7/12 bg-gray-900 h-screen p-5">
       <h1 className=" text-center">Recently Played Games: {recentCount}</h1>
       <div className="grid grid-cols-3 gap-1 bg-gray-900 h-fit mx-0 pt-5">
       {recent.map(item => (
-        <div className = "text-white" key={item.appid}>{item.name} Playtime: {twoDecimal(item.playtime_forever)} hours
+        <div className = "text-white" key={item.appid}>{item.name} 
+        <br></br>
+        Playtime: {twoDecimal(item.playtime_forever)} hours
         <br></br>
         Past two weeks: {twoDecimal(item.playtime_2weeks)} hours
         <img className="w-fit h-fit" src={getImg(item.appid)} alt = "game"></img>
