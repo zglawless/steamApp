@@ -1,5 +1,6 @@
 {
   "name": "steamapp",
+  "homepage": "http://zaklawless.com/SteamProfileBuddy",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
