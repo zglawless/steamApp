@@ -140,7 +140,7 @@ const Profile = () => {
     return "https://steamcdn-a.akamaihd.net/steam/apps/" + id + "/library_600x900_2x.jpg";
   }
   function getCsgoImg(hash) {
-    return "https://cdn.steamcommunity.com/economy/image/" + hash;
+    return "http://cdn.steamcommunity.com/economy/image/" + hash;
   }
   function getDate(unix) {
     var date = new Date(unix * 1000).toLocaleDateString("en-US");
