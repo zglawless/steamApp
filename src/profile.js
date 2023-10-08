@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 /* eslint eqeqeq: 0 */
 const Profile = () => {
   var id = localStorage.getItem('id');
-  var URL = "http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamids=" + id;
-  var gURL = "http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id + "&format=json&include_appinfo=1";
-  var rURL = "http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id + "&format=json&include_appinfo=1";
+  var URL = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamids=" + id;
+  var gURL = "https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id + "&format=json&include_appinfo=1";
+  var rURL = "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id + "&format=json&include_appinfo=1";
   var bURL = "https://api.steampowered.com/IPlayerService/GetProfileBackground/v1/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id;
-  var iURL = "http://steamcommunity.com/inventory/" + id + "/730/2?l=english&count=2000";
-  var mURL = "http://steamcommunity.com/market/priceoverview/?appid=730&currency=1&market_hash_name=";
+  var iURL = "https://steamcommunity.com/inventory/" + id + "/730/2?l=english&count=2000";
+  var mURL = "https://steamcommunity.com/market/priceoverview/?appid=730&currency=1&market_hash_name=";
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -140,7 +140,7 @@ const Profile = () => {
     return "https://steamcdn-a.akamaihd.net/steam/apps/" + id + "/library_600x900_2x.jpg";
   }
   function getCsgoImg(hash) {
-    return "http://cdn.steamcommunity.com/economy/image/" + hash;
+    return "https://cdn.steamcommunity.com/economy/image/" + hash;
   }
   function getDate(unix) {
     var date = new Date(unix * 1000).toLocaleDateString("en-US");
