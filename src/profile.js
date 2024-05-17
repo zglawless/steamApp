@@ -5,12 +5,12 @@ import { useNavigate } from "react-router-dom";
 /* eslint eqeqeq: 0 */
 const Profile = () => {
   var id = localStorage.getItem('id');
-  var URL = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamids=" + id;
-  var gURL = "https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id + "&format=json&include_appinfo=1";
-  var rURL = "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id + "&format=json&include_appinfo=1";
-  var bURL = "https://api.steampowered.com/IPlayerService/GetProfileBackground/v1/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id;
-  var iURL = "https://steamcommunity.com/inventory/" + id + "/730/2?l=english&count=2000";
-  var mURL = "https://steamcommunity.com/market/priceoverview/?appid=730&currency=1&market_hash_name=";
+  // var URL = "https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamids=" + id;
+  // var gURL = "https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id + "&format=json&include_appinfo=1";
+  // var rURL = "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id + "&format=json&include_appinfo=1";
+  // var bURL = "https://api.steampowered.com/IPlayerService/GetProfileBackground/v1/?key=" + process.env.REACT_APP_STEAM_API_KEY + "&steamid=" + id;
+  // var iURL = "https://steamcommunity.com/inventory/" + id + "/730/2?l=english&count=2000";
+  // var mURL = "https://steamcommunity.com/market/priceoverview/?appid=730&currency=1&market_hash_name=";
   const [data, setData] = useState(null);
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -35,7 +35,8 @@ const Profile = () => {
 
   const fetchProfile = () => {
     setLoading(true);
-    fetch(URL)
+    var newURL = "http://localhost:3005/getplayersummary/?" + id;
+    fetch(newURL)
       .then(response => {
         return response.json();
       })
@@ -60,13 +61,12 @@ const Profile = () => {
 
   const fetchGames = () => {
     setLoading(true);
-    fetch(gURL)
+    fetch("http://localhost:3005/getownedgames/?" + id)
       .then(response => {
         return response.json();
       })
       .then(json => {
         if(json.response.games != null){
-        console.log(json.response.games);
         var temp = [...json.response.games].sort((a, b) => b.playtime_forever - a.playtime_forever);
         setGames(temp);
         setGamesCount(json.response.game_count);
@@ -78,30 +78,33 @@ const Profile = () => {
   const fetchInv = async () => {
     setLoading(true);
     if (inv != []) {
-      const response = await fetch(iURL);
-      const code = await response.json();
-      if (code != null){
-      const asset = code.assets;
-      const description = code.descriptions;
-      console.log(code);
-      console.log(asset);
-      for (var i = 0; i < asset.length; i++) {
-        for (var x = 0; x < description.length; x++) {
-          if (asset[i].classid == description[x].classid) {
-            asset[i].description = description[x].descriptions;
-            asset[i].icon_url = description[x].icon_url;
-            asset[i].market_actions = description[x].market_actions;
-            asset[i].market_name = description[x].market_name;
-            asset[i].tags = description[x].tags;
-            asset[i].tradable = description[x].tradable;
-            break;
-          }
-        }
+      await fetch("http://localhost:3005/getplayerinv/?" + id)
+        .then(response => {
+          return response.json();
+        })
+        .then(code => {
+          if (code != null) {
+            const asset = code.assets;
+            const description = code.descriptions;
+            for (var i = 0; i < asset.length; i++) {
+              for (var x = 0; x < description.length; x++) {
+                if (asset[i].classid == description[x].classid) {
+                  asset[i].description = description[x].descriptions;
+                  asset[i].icon_url = description[x].icon_url;
+                  asset[i].market_actions = description[x].market_actions;
+                  asset[i].market_name = description[x].market_name;
+                  asset[i].tags = description[x].tags;
+                  asset[i].tradable = description[x].tradable;
+                  break;
+                }
+              }
 
-      }
-      setInv(asset);
-      setIsInvPrivate(false);
-    } else setIsInvPrivate(true);
+            }
+            setInv(asset);
+            setIsInvPrivate(false);
+          } else setIsInvPrivate(true);
+        })
+
     }
     setLoading(false);
   }
@@ -109,7 +112,7 @@ const Profile = () => {
 
   const fetchRecent = () => {
     setLoading(true);
-    fetch(rURL)
+    fetch("http://localhost:3005/getrecentlyplayed/?" + id)
       .then(response => {
         return response.json();
       })
@@ -128,7 +131,7 @@ const Profile = () => {
   }
   const fetchProfileBackground = () => {
     setLoading(true);
-    fetch(bURL)
+    fetch("http://localhost:3005/getprofilebackground/?" + id)
       .then(response => {
         return response.json();
       })
@@ -153,15 +156,23 @@ const Profile = () => {
     return temp;
   }
 
-  function selectedItem(index, market) {
+  // const getPrice = async (market) => {
+  //   console.log(selectItem);
+  //   const res = await fetch("http://localhost:3005/getprice/?" + market);
+  //   const data = await res.json();
+  //   console.log(data);
+  //   return (data);
+  // }
+  
+
+  const selectedItem = async (index, market) =>  {
     setLoading(true);
     setSelectItem(index);
-    fetch(mURL + market)
-      .then((response) => response.json())
-      .then((data) => {
-        setPrice(data.lowest_price);
-        console.log(data);
-      })
+    console.log(market);
+    const uri = "http://localhost:3005/getprice/?" + market;
+    const res = await fetch(uri);
+    const data = await res.json();
+    setPrice(data.lowest_price)
     setLoading(false);
   }
 
@@ -178,21 +189,23 @@ const Profile = () => {
     return <h1>Loading...</h1>
   }
 
-  if (data.personastate == 0) {
-    data.personastate = "Offline";
-  } else if (data.personastate == 1) {
-    data.personastate = "Online";
-  } else if (data.personastate == 2) {
-    data.personastate = "Busy";
-  } else if (data.personastate == 3) {
-    data.personastate = "Away";
-  } else if (data.personastate == 4) {
-    data.personastate = "Snooze";
-  } else if (data.personastate == 5) {
-    data.personastate = "Looking to trade";
-  } else if (data.personastate == 6) {
-    data.personastate = "Looking to play";
-  }
+
+    if (data.personastate == 0) {
+      data.personastate = "Offline";
+    } else if (data.personastate == 1) {
+      data.personastate = "Online";
+    } else if (data.personastate == 2) {
+      data.personastate = "Busy";
+    } else if (data.personastate == 3) {
+      data.personastate = "Away";
+    } else if (data.personastate == 4) {
+      data.personastate = "Snooze";
+    } else if (data.personastate == 5) {
+      data.personastate = "Looking to trade";
+    } else if (data.personastate == 6) {
+      data.personastate = "Looking to play";
+    }  
+
 
   function Header() {
     if(loading === false){
