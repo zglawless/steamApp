@@ -37,8 +37,8 @@ export const Home = (setResponse) => {
                     Submit
                     </button>
                 </div>
-                <p>Ex. 76561198322320424</p>
-                <p>Ex. https://steamcommunity.com/profiles/76561198322320424</p>
+                <p>Ex. 76561198286077976</p>
+                <p>Ex. https://steamcommunity.com/profiles/76561198286077976</p>
                 </form>
         </div>
     );
